@@ -41,3 +41,15 @@ Wrapper Addressables Manager -> Example -> Example Scene Data -> Data Example ->
 Wrapper Addressables Manager -> Example -> Example Scene Data -> Example All Method
 
 Wrapper Addressables Manager -> Example -> Example Scene Data -> Example Test Method Button
+
+---------------------------------------------------------------------------------------------------------
+
+Для работы нужны плагины
+
+Unity_Plugin-General_Public - https://github.com/ximik-xim/Unity_Plugin-TList_Public
+
+Unity_Plugin-TList_Public - https://github.com/ximik-xim/Unity_Plugin-General_Public
+
+---------------------------------------------------------------------------------------------------------
+
+Ну и так же нужно восстановить ключи TList из бэкапов. Для этого нажимаем на папку Wrapper Addressables Manager кнопкой ПКМ и заходим в пункт TList -> К папке -> Стереть и восстановить все данные
