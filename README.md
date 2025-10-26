@@ -1,0 +1,1 @@
+# Unity_Plugin_Wrapper_Addressables_Manager_Public
