@@ -47,7 +47,7 @@ public class UpdateCatalogsAllErrorContinue : AbsUpdateCatalogs
         
         int id = GetUniqueId();
         //делаю обертку т.к могу несколько раз делать запросы на данные, а верну лиш 1 итог. результат 
-        CallbackStorageStatusIResourceLocationAddressablesWrapper wrapperCallbackData = new CallbackStorageStatusIResourceLocationAddressablesWrapper(id);
+        CallbackStatusIResourceLocation wrapperCallbackData = new CallbackStatusIResourceLocation(id);
         _idCallback.Add(id);
 
         //проверяю готовы ли данные 

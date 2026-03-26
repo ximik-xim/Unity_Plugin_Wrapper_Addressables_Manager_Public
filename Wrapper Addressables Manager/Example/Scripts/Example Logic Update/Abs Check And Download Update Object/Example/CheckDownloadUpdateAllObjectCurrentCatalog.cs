@@ -11,7 +11,7 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 /// (нужен в случае если каталог был обновлен, а сами фаилы по какой либо причине не были обновлены)
 /// (желательно использовать в момент запуска(загрузки) игры)
 /// </summary>
-public class CheckAndDownloadUpdateObjectAll_AndCheckCurrentCatalog : AbsCheckAndDownloadUpdateObject
+public class CheckDownloadUpdateAllObjectCurrentCatalog : AbsCheckAndDownloadUpdateObject
 {
     public override bool IsInit => _isInit;
     private bool _isInit = false;
@@ -57,7 +57,7 @@ public class CheckAndDownloadUpdateObjectAll_AndCheckCurrentCatalog : AbsCheckAn
     /// <summary>
     /// Обертка над Callback, для возможности выполнить цепочку операции и вернуть в конце результат
     /// </summary>
-    private CallbackStorageStatusIResourceLocationAddressablesWrapper _wrapperCallbackData;
+    private CallbackStatusIResourceLocation _wrapperCallbackData;
 
     /// <summary>
     /// Блокировка, т.к не подразумаеваться многораз. использ.(подрят) этого класса
@@ -246,7 +246,7 @@ public class CheckAndDownloadUpdateObjectAll_AndCheckCurrentCatalog : AbsCheckAn
         {
             _isBlock = true;
             
-            _wrapperCallbackData = new CallbackStorageStatusIResourceLocationAddressablesWrapper(0);
+            _wrapperCallbackData = new CallbackStatusIResourceLocation(0);
         
             //Проверка, есть ли обновл. у катологов
             var dataCallback = _checkUpdateCatalog.StartCheckUpdateCatalog();

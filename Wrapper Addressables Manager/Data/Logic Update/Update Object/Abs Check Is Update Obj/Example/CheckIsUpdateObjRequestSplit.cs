@@ -1,30 +1,31 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.AddressableAssets.ResourceLocators;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using Random = UnityEngine.Random;
 
 /// <summary>
-/// Этот скрипт нужен, что бы список элементов которые надо обновить разбить
-/// на несколько запросов(групп) по N элементов (да хоть группу по 1 элементу) 
+/// Этот скрипт нужен, что бы разбить на ряд мелких запросов, обработку запроса, а нужно ли обновление для этих фаилв
+/// Разделение происходит на несколько запросов(групп) по N элементов (да хоть группу по 1 элементу) 
 /// </summary>
-public class DownloadUpdateObjRequestSplit : AbsDownloadUpdateObj
+public class CheckIsUpdateObjRequestSplit : AbsCheckIsUpdateObj
 {
     public override bool IsInit => _isInit;
     private bool _isInit = false;
     public override event Action OnInit;
     
     [SerializeField]
-    private AbsDownloadUpdateObj _absDownloadUpdateObj;
+    private AbsCheckIsUpdateObj _absCheckIsUpdateObj;
     
     /// <summary>
     /// Кол-во элементов в запросе к серверу
     /// </summary>
     [SerializeField]
     private int _countElementRequest = 1;
-
-
+    
     /// <summary>
     /// Список Id callback, которые сейчас в ожидании
     /// (сериализован просто для удобного отслеживания в инспекторе)
@@ -36,9 +37,9 @@ public class DownloadUpdateObjRequestSplit : AbsDownloadUpdateObj
     {
         _idCallback.Clear();
 
-        if (_absDownloadUpdateObj.IsInit == false)
+        if (_absCheckIsUpdateObj.IsInit == false)
         {
-            _absDownloadUpdateObj.OnInit += OnInitAbsUpdateCatalogs;
+            _absCheckIsUpdateObj.OnInit += OnInitAbsUpdateCatalogs;
             return;
         }
 
@@ -48,9 +49,9 @@ public class DownloadUpdateObjRequestSplit : AbsDownloadUpdateObj
     
     private void OnInitAbsUpdateCatalogs()
     {
-        if (_absDownloadUpdateObj.IsInit == true)
+        if (_absCheckIsUpdateObj.IsInit == true)
         {
-            _absDownloadUpdateObj.OnInit -= OnInitAbsUpdateCatalogs;
+            _absCheckIsUpdateObj.OnInit -= OnInitAbsUpdateCatalogs;
             InitAbsUpdateCatalogs();
         }
     }
@@ -65,16 +66,16 @@ public class DownloadUpdateObjRequestSplit : AbsDownloadUpdateObj
     }
 
 
-    public override GetServerRequestData<StorageStatusCallbackIResourceLocation> DownloadUpdateObj(List<IResourceLocation> locatorsObjectUpdate)
+    public override GetServerRequestData<StorageStatusCallbackIResourceLocation> CheckIsUpdateObj(List<IResourceLocation> locatorsObjectUpdate)
     {
         //Список с callback запросами к серверу 
         List<GetServerRequestData<StorageStatusCallbackIResourceLocation>> bufferCallback = new List<GetServerRequestData<StorageStatusCallbackIResourceLocation>>();
 
         int id = GetUniqueId();
         //обертка, для возможности венуть данные когда они будут готовы
-        CallbackStorageStatusIResourceLocationAddressablesWrapper wrapperCallbackData = new CallbackStorageStatusIResourceLocationAddressablesWrapper(id);
+        CallbackStatusIResourceLocation wrapperCallbackData = new CallbackStatusIResourceLocation(id);
         _idCallback.Add(id);
-
+        
         //Список с получ. данными от всех запросов к серверу
         List<StatusCallbackIResourceLocation> listStatusCallback = new List<StatusCallbackIResourceLocation>();
 
@@ -91,11 +92,11 @@ public class DownloadUpdateObjRequestSplit : AbsDownloadUpdateObj
 
             i--;
             targetCount--;
-
+            
             if (bufferListRequestLocator.Count == _countElementRequest)
             {
                 //Делаю отпр. запроса на обновление католгов 
-                var callbackData = _absDownloadUpdateObj.DownloadUpdateObj(bufferListRequestLocator);
+                var callbackData = _absCheckIsUpdateObj.CheckIsUpdateObj(bufferListRequestLocator);
                 bufferCallback.Add(callbackData);
 
                 bufferListRequestLocator.Clear();
@@ -106,10 +107,10 @@ public class DownloadUpdateObjRequestSplit : AbsDownloadUpdateObj
         //И её тоже надо отправить
         if (bufferListRequestLocator.Count > 0)
         {
-            var callbackData = _absDownloadUpdateObj.DownloadUpdateObj(bufferListRequestLocator);
+            var callbackData = _absCheckIsUpdateObj.CheckIsUpdateObj(bufferListRequestLocator);
             bufferCallback.Add(callbackData);
         }
-
+        
         Check();
 
         void Check()
@@ -147,7 +148,7 @@ public class DownloadUpdateObjRequestSplit : AbsDownloadUpdateObj
                 wrapperCallbackData.Data.StatusServer = StatusCallBackServer.Ok;
 
                 StorageStatusCallbackIResourceLocation statusAll = new StorageStatusCallbackIResourceLocation(listStatusCallback);
-
+                
                 wrapperCallbackData.Data.GetData = statusAll;
                 wrapperCallbackData.Data.IsGetDataCompleted = true;
                 wrapperCallbackData.Data.Invoke();
@@ -182,3 +183,9 @@ public class DownloadUpdateObjRequestSplit : AbsDownloadUpdateObj
         return id;
     }
 }
+
+
+
+
+
+

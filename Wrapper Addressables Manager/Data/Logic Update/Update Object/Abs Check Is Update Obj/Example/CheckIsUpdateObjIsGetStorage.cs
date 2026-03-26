@@ -80,7 +80,7 @@ public class CheckIsUpdateObjIsGetStorage : AbsCheckIsUpdateObj
     public override GetServerRequestData<StorageStatusCallbackIResourceLocation> CheckIsUpdateObj(List<IResourceLocation> locatorsObjectUpdate)
     {
         int id = GetUniqueId();
-        CallbackStorageStatusIResourceLocationAddressablesWrapper wrapperCallbackData = new CallbackStorageStatusIResourceLocationAddressablesWrapper(id);
+        CallbackStatusIResourceLocation wrapperCallbackData = new CallbackStatusIResourceLocation(id);
         _idCallback.Add(id);
         
         List<IResourceLocation> listLocator = new List<IResourceLocation>();

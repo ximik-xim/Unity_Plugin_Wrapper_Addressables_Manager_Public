@@ -73,7 +73,7 @@ public class UpdateCatalogsRequestSplit : AbsUpdateCatalogs
 
         int id = GetUniqueId();
         //обертка, для возможности венуть данные когда они будут готовы
-        CallbackStorageStatusIResourceLocationAddressablesWrapper wrapperCallbackData = new CallbackStorageStatusIResourceLocationAddressablesWrapper(id);
+        CallbackStatusIResourceLocation wrapperCallbackData = new CallbackStatusIResourceLocation(id);
         _idCallback.Add(id);
         
         //Список с получ. данными от всех запросов к серверу

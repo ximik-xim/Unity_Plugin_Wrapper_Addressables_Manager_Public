@@ -27,7 +27,7 @@ public class CheckAndDownloadUpdateObjectTargetListObj : MonoBehaviour
     /// <summary>
     /// Обертка над Callback, для возможности выполнить цепочку операции и вернуть в конце результат
     /// </summary>
-    private CallbackStorageStatusIResourceLocationAddressablesWrapper _wrapperCallbackData;
+    private CallbackStatusIResourceLocation _wrapperCallbackData;
     
     /// <summary>
     /// Блокировка, т.к не подразумаеваться многораз. использ.(подрят) этого класса
@@ -88,7 +88,7 @@ public class CheckAndDownloadUpdateObjectTargetListObj : MonoBehaviour
         {
             _isBlock = true;
             
-            _wrapperCallbackData = new CallbackStorageStatusIResourceLocationAddressablesWrapper(0);
+            _wrapperCallbackData = new CallbackStatusIResourceLocation(0);
             
             //Проверка, есть ли обновл. у обьекта
             var dataCallback = _absCheckIsUpdateObj.CheckIsUpdateObj(locationObject);

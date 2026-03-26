@@ -53,7 +53,7 @@ public class CheckAndDownloadUpdateObjectAll : AbsCheckAndDownloadUpdateObject
     /// <summary>
     /// Обертка над Callback, для возможности выполнить цепочку операции и вернуть в конце результат
     /// </summary>
-    private CallbackStorageStatusIResourceLocationAddressablesWrapper _wrapperCallbackData;
+    private CallbackStatusIResourceLocation _wrapperCallbackData;
 
     /// <summary>
     /// Блокировка, т.к не подразумаеваться многораз. использ.(подрят) этого класса
@@ -226,7 +226,7 @@ public class CheckAndDownloadUpdateObjectAll : AbsCheckAndDownloadUpdateObject
         {
             _isBlock = true;
             
-            _wrapperCallbackData = new CallbackStorageStatusIResourceLocationAddressablesWrapper(0);
+            _wrapperCallbackData = new CallbackStatusIResourceLocation(0);
         
             //Проверка, есть ли обновл. у катологов
             var dataCallback = _checkUpdateCatalog.StartCheckUpdateCatalog();
